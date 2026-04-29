@@ -546,8 +546,14 @@ if (<?php echo $res?>) {
             </div>
         </div>
     </div>
-    <form action="../function/cartmovorder.php" method="post" style="display: none;">
+    <!-- <form action="../function/cartmovorder.php" method="post" style="display: none;">
         <input type="text" name="user_id" value="<?php  echo $user_id;?>">
+          <input type="text" name="Total" value="<?php  echo $subtotal+$shipping+$tax;?>">
+        <input type="submit" name="submit" value="submit" id="order">
+    </form> -->
+      <form action="../pages/Payment.php" method="post" style="display: none;">
+        <input type="text" name="user_id" value="<?php  echo $user_id;?>">
+          <input type="text" name="Total" value="<?php  echo $subtotal+$shipping+$tax;?>">
         <input type="submit" name="submit" value="submit" id="order">
     </form>
 
