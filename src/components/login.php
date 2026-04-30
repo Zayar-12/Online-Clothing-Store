@@ -1,10 +1,12 @@
-<?php 
+<?php
 include("../function/connection.php");
+include("../function/functions.php");
 session_start();
 
-   
-$key=true;
- $key2=true;
+$role = checkrole("zayarlintun04@gmail.com", "zayar932004");
+
+$key = true;
+$key2 = true;
 ?>
 
 <!DOCTYPE html>
@@ -21,13 +23,13 @@ $key=true;
     <script src="../../public/script.js"></script>
 
     <style>
-    svg[viewBox="0 0 128 128"] {
-        fill: #bbb;
-    }
+        svg[viewBox="0 0 128 128"] {
+            fill: #bbb;
+        }
     </style>
     <script>
-        if(<?php echo $_SESSION["loginfail"] ?>){
-            <?php $_SESSION["loginfail"]=null; ?>
+        if (<?php echo $_SESSION["loginfail"] ?>) {
+            <?php $_SESSION["loginfail"] = null; ?>
             alert("login Fail");
         }
     </script>
@@ -72,7 +74,7 @@ $key=true;
                     </div>
 
                     <div>
-                        <label class="text-gray-800 text-base font-medium mb-2 block" >Email</label>
+                        <label class="text-gray-800 text-base font-medium mb-2 block">Email</label>
                         <div class="relative flex items-center ">
                             <input name="email" type="email" required
                                 class="w-full text-base text-gray-800 border border-gray-300 px-4 py-3 rounded-md outline-blue-600"
@@ -102,7 +104,7 @@ $key=true;
                                 class="w-full text-base text-gray-800 border border-gray-300 px-4 py-3 rounded-md outline-blue-600"
                                 placeholder="Enter password">
                             <button type='button' @click="show = !show" class="w-[18px] h-[18px] absolute right-4 cursor-pointer">
-                              
+
                                 <svg x-show="!show" class='w-6 h-6' viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -142,82 +144,82 @@ $key=true;
                     <div class="mt-8">
                         <button type="submit"
                             class="w-full shadow-xl py-3 px-6 text-base font-semibold rounded-md text-white bg-primary hover:bg-blue-700 focus:outline-none">
-                     Log in
+                            Log in
                         </button>
                     </div>
                     <p class="text-sm mt-8 text-center text-gray-800">Don't have an account <a
-                            href="./signup.php";
-                            class="text-primary font-semibold hover:underline ml-1 whitespace-nowrap">Register here</a>
+                            href="./signup.php" ;
+                            class="text-primary font-semibold hover:underline ml-1 whitespace-nowrap">Register</a>
                     </p>
                 </form>
             </div>
         </div>
     </div>
 
-    
+
 </body>
 
 </html>
-<?php 
+<?php
 
-if($_SERVER["REQUEST_METHOD"]=="POST"){
-   ob_start();
-$email=filter_input(INPUT_POST,"email",FILTER_SANITIZE_SPECIAL_CHARS);
-$pass=filter_input(INPUT_POST,"password",FILTER_SANITIZE_SPECIAL_CHARS);
- 
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    ob_start();
+    $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_SPECIAL_CHARS);
+    $pass = filter_input(INPUT_POST, "password", FILTER_SANITIZE_SPECIAL_CHARS);
 
-if($email=="admin@gmail.com" && $pass =="admin123"){
-    header("Location:../admin/home.php");
-} 
-else{  
-     $result=$con->query("SELECT * FROM customers");
-     if(!empty($result)&& $result->num_rows>0){
-        while($row=$result->fetch_assoc()){
-             if($row["email"]==$email && password_verify($pass,$row["pass"])){
-                $_SESSION["user_id"]=$row["cus_id"];
-                
-                $key=false; 
-               
-                  ?>
-    <script>
-    document.getElementById("success").style.display = "block";
-    </script>
-    <?php
-    
-     ob_end_flush();
-                
-             }  
 
-         }
-        
-        
-        
+
+
+
+    // $role=checkrole($email,$pass);
+    //     if ($role == "admin") {
+
+    //             header("Location:../admin/home.php");
+
+    //     }
+    if ($email == "admin@gmail.com" && $pass == "admin123") {
+        header("Location:../admin/home.php");
+        exit();
+    } else {
+        $result = $con->query("SELECT * FROM customers");
+        if (!empty($result) && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                if ($row["email"] == $email && password_verify($pass, $row["pass"])) {
+                    $_SESSION["user_id"] = $row["cus_id"];
+
+                    $key = false;
+
+?>
+                    <script>
+                        document.getElementById("success").style.display = "block";
+                    </script>
+            <?php
+
+                    ob_end_flush();
+                }
+            }
         }
-         if($key){ ?>
-    <script>
-    document.getElementById("unsuccess").style.display = "block";
-    </script>
+        if ($key) {
+            ?>
+            <script>
+                document.getElementById("unsuccess").style.display = "block";
+            </script>
 
-    <script>
-    function togglePassword() {
-        const passwordInput = document.querySelector('input[name="password"]');
-        const passwordIcon = document.querySelector('svg[viewBox="0 0 128 128"]');
-        if (passwordInput.type === 'password') {
-            passwordInput.type = 'text';
-            passwordIcon.classList.add('text-blue-600');
-        } else {
-            passwordInput.type = 'password';
-            passwordIcon.classList.remove('text-blue-600');
+            <script>
+                function togglePassword() {
+                    const passwordInput = document.querySelector('input[name="password"]');
+                    const passwordIcon = document.querySelector('svg[viewBox="0 0 128 128"]');
+                    if (passwordInput.type === 'password') {
+                        passwordInput.type = 'text';
+                        passwordIcon.classList.add('text-blue-600');
+                    } else {
+                        passwordInput.type = 'password';
+                        passwordIcon.classList.remove('text-blue-600');
+                    }
+                }
+            </script>
+
+<?php
         }
     }
-    </script>
-
-    <?php  } 
-
-      
-          
-     
-}   
 }
-
- ?>
