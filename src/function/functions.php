@@ -465,16 +465,16 @@ function select()
 
 //role check 
 
-function checkrole($email, $pass)
+function checkrole($email)
 {
     include("../function/connection.php");
 
     $result = $con->query("SELECT * FROM customers WHERE email='$email' ");
     if (!empty($result) && $result->num_rows > 0) {
         if ($row = $result->fetch_assoc()) {
-            if (password_verify($pass, $row["pass"])) {
+           
                 return $row['role'];
-            }
+            
         }
     }
 }

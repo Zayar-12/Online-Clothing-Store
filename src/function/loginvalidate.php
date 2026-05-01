@@ -12,8 +12,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // if($email=="admin@gmail.com" && $pass =="admin123"){
     //     header("Location:../admin/home.php");
     // } 
-    $role = checkrole($email, $pass);
-    if ($role == "admin") {
+    $_SESSION["role"] = checkrole($email);
+    if ($_SESSION["role"] == "admin") {
 
         header("Location:../admin/home.php");
         exit();

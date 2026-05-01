@@ -3,7 +3,6 @@ include("../function/connection.php");
 include("../function/functions.php");
 session_start();
 
-$role = checkrole("zayarlintun04@gmail.com", "zayar932004");
 
 $key = true;
 $key2 = true;
